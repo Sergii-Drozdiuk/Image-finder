@@ -1,98 +1,71 @@
-import axios from 'axios';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
+import { fetchImages } from "../src/js/fetch"
 
 const form = document.getElementById('search-form');
 const gallery = document.querySelector('.gallery');
 const loadMoreBtn = document.querySelector('.load-more');
 const lightbox = new SimpleLightbox('.photo-card a');
 
-let page = 1;
-let searchQuery = '';
-
 form.addEventListener('submit', handleSubmit);
 loadMoreBtn.addEventListener('click', loadMoreImages);
 
+let page = 1;
+let searchQuery = '';
+
 function handleSubmit(evt) {
   evt.preventDefault();
-  searchQuery = evt.target.elements.searchQuery.value.trim();
+  searchQuery = evt.target.elements.searchQuery.value;
   page = 1;
   clearGallery();
-  fetchImages().then(checkNumberOfPages).catch((err) => {
-  Notify.failure('Sorry, something went wrong. Please try again.');
-  console.log(err);
-});
+  fetchImages(searchQuery, page).then(checkNumberOfPages).catch(errorMessage);
 }
 
 function loadMoreImages() {
   page += 1;
-  fetchImages().then(checkNumberOfPages).catch((err) => {
-  Notify.failure('Sorry, something went wrong. Please try again.');
-  console.log(err);
-});
+  fetchImages(searchQuery, page).then(checkNumberOfPages).catch(errorMessage);
   scrollPage();
 }
 
-async function fetchImages() {
-  try {
-    const resp = await axios.get(`https://pixabay.com/api/`, {
-      params: {
-        key: '39181304-34c4662094c53de77895ac9be',
-        q: searchQuery,
-        image_type: 'photo',
-        orientation: 'horizontal',
-        safesearch: true,
-        page,
-        per_page: 40,
-      },
-    });
-    return resp;
-  } catch (err) {
-    Notify.failure('Sorry, something went wrong. Please try again.');
-    console.log(err);
-  }
-}
-
-function checkNumberOfPages(arr){
-  const images = arr.data.hits;
-  const totalHits = arr.data.totalHits;
+function checkNumberOfPages(resp) {
+  const {totalHits, hits} = resp
   if (totalHits === 0) {
     Notify.failure('Sorry, there are no images matching your search query. Please try again.');
-    form.reset();
-    return;
+    return form.reset();
   }
-  renderImages(images);
-  lightbox.refresh();
+  renderImages(hits);
   if (page === 1) {
     Notify.success(`Hooray! We found ${totalHits} images.`);
   }
-  if (page >= (totalHits/images.length)) {
+  if (page >= (totalHits/hits.length)) {
     loadMoreBtn.classList.add('is-hidden');
     Notify.info("We're sorry, but you've reached the end of search results.");
   }
 }
 
-function renderImages(images) {
-  const imageMarkup = images
-    .map(
-      image => `
-      <div class="photo-card">
-        <a href="${image.largeImageURL}" class="photo-card-a">
-          <img src="${image.webformatURL}" alt="${image.tags}" loading="lazy" />
+function renderImages(hits) {
+  const imageMarkup = hits
+    .map( 
+      hit => {
+        const { largeImageURL, webformatURL, tags, likes, views, comments, downloads } = hit;
+        return `<div class="photo-card">
+        <a href="${largeImageURL}" class="photo-card-a">
+          <img src="${webformatURL}" alt="${tags}" loading="lazy" />
         </a>
         <div class="info">
-          <p class="info-item"><b>Likes:</b> ${image.likes}</p>
-          <p class="info-item"><b>Views:</b> ${image.views}</p>
-          <p class="info-item"><b>Comments:</b> ${image.comments}</p>
-          <p class="info-item"><b>Downloads:</b> ${image.downloads}</p>
+          <p class="info-item"><b>Likes:</b> ${likes}</p>
+          <p class="info-item"><b>Views:</b> ${views}</p>
+          <p class="info-item"><b>Comments:</b> ${comments}</p>
+          <p class="info-item"><b>Downloads:</b> ${downloads}</p>
         </div>
       </div>`
-    )
+      })
     .join('');
 
   gallery.insertAdjacentHTML('beforeend', imageMarkup);
   loadMoreBtn.classList.remove('is-hidden');
+  lightbox.refresh();
 }
 
 function clearGallery() {
@@ -107,6 +80,8 @@ function scrollPage() {
     behavior: 'smooth',
   });
 }
+
+const errorMessage = () => Notify.failure('Sorry, something went wrong. Please try again.');
 
 const checkbox = document.getElementById('pagination-checkbox');
 checkbox.addEventListener('change', togglePagination);
