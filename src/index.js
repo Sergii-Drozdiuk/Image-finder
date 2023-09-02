@@ -17,7 +17,7 @@ loadMoreBtn.addEventListener('click', loadMoreImages);
 function handleSubmit(evt) {
   evt.preventDefault();
   searchQuery = evt.target.elements.searchQuery.value.trim();
-  page = 12;
+  page = 1;
   clearGallery();
   fetchImages().then(checkNumberOfPages).catch((err) => {
   Notify.failure('Sorry, something went wrong. Please try again.');
@@ -123,7 +123,6 @@ function togglePagination() {
 
 function checkScrollPosition() {
   const documentHeight = document.documentElement.scrollHeight;
-
   if (checkbox.checked && window.scrollY + window.innerHeight >= documentHeight - 100) {
     loadMoreImages();
   }
