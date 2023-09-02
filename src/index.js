@@ -28,6 +28,8 @@ function loadMoreImages() {
   scrollPage();
 }
 
+const errorMessage = () => Notify.failure('Sorry, something went wrong. Please try again.');
+
 function checkNumberOfPages(resp) {
   const {totalHits, hits} = resp
   if (totalHits === 0) {
@@ -51,7 +53,7 @@ function renderImages(hits) {
         const { largeImageURL, webformatURL, tags, likes, views, comments, downloads } = hit;
         return `<div class="photo-card">
         <a href="${largeImageURL}" class="photo-card-a">
-          <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+          <img src="${webformatURL}" alt="${tags}" loading="lazy"/>
         </a>
         <div class="info">
           <p class="info-item"><b>Likes:</b> ${likes}</p>
@@ -80,26 +82,3 @@ function scrollPage() {
     behavior: 'smooth',
   });
 }
-
-const errorMessage = () => Notify.failure('Sorry, something went wrong. Please try again.');
-
-const checkbox = document.getElementById('pagination-checkbox');
-checkbox.addEventListener('change', togglePagination);
-
-function togglePagination() {
-  if (checkbox.checked) {
-    loadMoreBtn.classList.add('is-hidden');
-    window.addEventListener('scroll', checkScrollPosition);
-  } else if(searchQuery !== '') {
-    loadMoreBtn.classList.remove('is-hidden');
-    window.removeEventListener('scroll', checkScrollPosition);
-  }
-}
-
-function checkScrollPosition() {
-  const documentHeight = document.documentElement.scrollHeight;
-  if (checkbox.checked && window.scrollY + window.innerHeight >= documentHeight - 100) {
-    loadMoreImages();
-  }
-}
-

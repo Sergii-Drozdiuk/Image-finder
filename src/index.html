@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8" />
@@ -11,24 +11,16 @@
 
 <body>
   <header>
-    <div class="container header-container">
+    <div class="container">
       <form class="search-form" id="search-form">
         <input type="text" name="searchQuery" autocomplete="off" placeholder="Search images..." autofocus required />
         <button type="submit">Search</button>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" id="pagination-checkbox" />
-            <span>infinite scroll</span>
-          </label>
-        </div>
       </form>
     </div>
   </header>
-  <div class="container">
-    <div class="gallery">
-    </div>
-    <button type="button" class="load-more is-hidden">Load more</button>
+  <div class="gallery">
   </div>
+  <button type="button" class="load-more is-hidden">Load more</button>
   <script type="module" src="./index.js"></script>
 </body>
 

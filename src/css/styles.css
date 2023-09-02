@@ -1,26 +1,22 @@
 .is-hidden {
   display: none;
 }
-.header-container {
+.container {
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
 
   border: 1px solid transparent;
   border-radius: 15px;
   overflow: hidden;
 
   padding-top: 20px;
+  padding-bottom: 20px;
   margin-bottom: 5px;
   background-color: burlywood;
 }
 
 .search-form > button {
   margin-left: 20px;
-}
-.checkbox {
-  margin-top: 10px;
-  margin-bottom: 10px;
 }
 .gallery {
   display: flex;
@@ -38,7 +34,6 @@
   justify-content: space-evenly;
 }
 .load-more {
-  max-width: 150px;
   margin-bottom: 15px;
   margin-top: 15px;
   margin-right: auto;
