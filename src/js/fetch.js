@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-export async function fetchImages(searchQuery, page) {
+let imgPerPage = 0;
+
+async function fetchImages(searchQuery, page) {
   const resp = await axios(`https://pixabay.com/api/`, {
     params: {
       key: '39181304-34c4662094c53de77895ac9be',
@@ -12,5 +14,8 @@ export async function fetchImages(searchQuery, page) {
       per_page: 40,
     },
   });
+  imgPerPage = resp.config.params.per_page;
   return resp.data;
 }
+
+export {fetchImages, imgPerPage}

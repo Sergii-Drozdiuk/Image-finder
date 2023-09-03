@@ -1,7 +1,7 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import { fetchImages } from "../src/js/fetch"
+import { fetchImages, imgPerPage } from "../src/js/fetch"
 
 const form = document.getElementById('search-form');
 const gallery = document.querySelector('.gallery');
@@ -31,19 +31,24 @@ function loadMoreImages() {
 const errorMessage = () => Notify.failure('Sorry, something went wrong. Please try again.');
 
 function checkNumberOfPages(resp) {
-  const {totalHits, hits} = resp
+  const { totalHits, hits } = resp
+  let numberOfPages = Math.ceil(totalHits / imgPerPage);
+  
   if (totalHits === 0) {
     Notify.failure('Sorry, there are no images matching your search query. Please try again.');
     return form.reset();
   }
-  renderImages(hits);
+  
   if (page === 1) {
     Notify.success(`Hooray! We found ${totalHits} images.`);
   }
-  if (page >= (totalHits/hits.length)) {
-    loadMoreBtn.classList.add('is-hidden');
+  
+  if (page === numberOfPages) {
+    hideBtn();
     Notify.info("We're sorry, but you've reached the end of search results.");
-  }
+  } else { showBtn() };
+
+  renderImages(hits);
 }
 
 function renderImages(hits) {
@@ -64,15 +69,13 @@ function renderImages(hits) {
       </div>`
       })
     .join('');
-
   gallery.insertAdjacentHTML('beforeend', imageMarkup);
-  loadMoreBtn.classList.remove('is-hidden');
   lightbox.refresh();
 }
 
 function clearGallery() {
   gallery.innerHTML = '';
-  loadMoreBtn.classList.add('is-hidden');
+  hideBtn();
 }
 
 function scrollPage() {
@@ -81,4 +84,14 @@ function scrollPage() {
     top: cardHeight,
     behavior: 'smooth',
   });
+}
+
+function hideBtn() {
+  loadMoreBtn.classList.remove('is-visible');
+  loadMoreBtn.classList.add('is-hidden');
+}
+
+function showBtn() {
+  loadMoreBtn.classList.remove('is-hidden');
+  loadMoreBtn.classList.add('is-visible');
 }
