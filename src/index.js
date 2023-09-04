@@ -6,7 +6,10 @@ import { fetchImages, imgPerPage } from "../src/js/fetch"
 const form = document.getElementById('search-form');
 const gallery = document.querySelector('.gallery');
 const loadMoreBtn = document.querySelector('.load-more');
-const lightbox = new SimpleLightbox('.photo-card a');
+const lightbox = new SimpleLightbox('.gallery a', {
+    captionsData: 'alt',
+    captionDelay: 250,
+    });
 
 form.addEventListener('submit', handleSubmit);
 loadMoreBtn.addEventListener('click', loadMoreImages);
@@ -56,17 +59,18 @@ function renderImages(hits) {
     .map( 
       hit => {
         const { largeImageURL, webformatURL, tags, likes, views, comments, downloads } = hit;
-        return `<div class="photo-card">
+        return `
         <a href="${largeImageURL}" class="photo-card-a">
+          <div class="photo-card">
           <img src="${webformatURL}" alt="${tags}" loading="lazy"/>
-        </a>
         <div class="info">
           <p class="info-item"><b>Likes:</b> ${likes}</p>
           <p class="info-item"><b>Views:</b> ${views}</p>
           <p class="info-item"><b>Comments:</b> ${comments}</p>
           <p class="info-item"><b>Downloads:</b> ${downloads}</p>
         </div>
-      </div>`
+        </div>
+        </a>`
       })
     .join('');
   gallery.insertAdjacentHTML('beforeend', imageMarkup);

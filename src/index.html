@@ -10,17 +10,22 @@
 </head>
 
 <body>
-  <header>
-    <div class="container">
+  <header class="header">
+    <div class="header-container container">
       <form class="search-form" id="search-form">
-        <input type="text" name="searchQuery" autocomplete="off" placeholder="Search images..." autofocus required />
-        <button type="submit">Search</button>
+        <input class="input" type="text" name="searchQuery" autocomplete="off" placeholder="Search images..." autofocus
+          required />
+        <button class="button-search" type="submit">Search</button>
       </form>
     </div>
   </header>
-  <div class="gallery">
-  </div>
-  <button type="button" class="load-more is-hidden">Load more</button>
+  <main>
+    <div class="wrapper">
+      <div class="gallery">
+      </div>
+      <button type="button" class="load-more is-hidden">Load more</button>
+    </div>
+  </main>
   <script type="module" src="./index.js"></script>
 </body>
 
