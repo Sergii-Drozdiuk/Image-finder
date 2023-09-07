@@ -11,11 +11,6 @@ body {
   background: burlywood;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
 .header {
   position: fixed;
   top: 0;
@@ -24,14 +19,12 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 0 10px 0;
   background: rgba(222, 184, 135, 0.5);
 }
 .header-container {
   display: flex;
   justify-content: center;
-}
-.container {
+
   padding-top: 15px;
   padding-bottom: 15px;
 }
@@ -89,6 +82,9 @@ a {
 
 .photo-card-a {
   flex-basis: calc((100% - 60px) / 4);
+
+  color: inherit;
+  text-decoration: none;
 }
 
 .photo-card {
@@ -146,41 +142,3 @@ a {
 .is-visible {
   display: block;
 }
-/* .container {
-  display: flex;
-  justify-content: center;
-
-  border: 1px solid transparent;
-  border-radius: 15px;
-  overflow: hidden;
-
-  padding-top: 20px;
-  padding-bottom: 20px;
-  margin-bottom: 5px;
-  background-color: burlywood;
-}
-
-.search-form > button {
-  margin-left: 20px;
-}
-.gallery {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-}
-.photo-card {
-  border: 1px solid burlywood;
-  border-radius: 15px;
-  object-fit: cover;
-  overflow: hidden;
-}
-.info {
-  display: flex;
-  justify-content: space-evenly;
-}
-.load-more {
-  margin-bottom: 15px;
-  margin-top: 15px;
-  margin-left: auto;
-  margin-right: auto;
-} */
