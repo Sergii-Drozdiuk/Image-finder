@@ -2,10 +2,10 @@
   "name": "parcel-project-template",
   "version": "2.0.0",
   "description": "",
-  "homepage": "https://Sergii-Drozdiuk.github.io/goit-js-hw-11",
+  "homepage": "https://Sergii-Drozdiuk.github.io/Image-finder",
   "scripts": {
     "start": "parcel src/*.html",
-    "build": "parcel build src/*.html --public-url /goit-js-hw-11/"
+    "build": "parcel build src/*.html --public-url /Image-finder/"
   },
   "repository": {
     "type": "git",
